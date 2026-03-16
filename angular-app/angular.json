@@ -1,0 +1,207 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+<<<<<<< HEAD
+    "restaurant-management": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css",
+          "standalone": true
+        }
+      },
+=======
+    "teleport-project-template-angular": {
+      "projectType": "application",
+      "schematics": {},
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+<<<<<<< HEAD
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/restaurant-management",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "css",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+=======
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/teleport-project-template-angular",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css",
+              "src/responsive-overrides.css"
+            ],
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+<<<<<<< HEAD
+=======
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+<<<<<<< HEAD
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "restaurant-management:build:production"
+            },
+            "development": {
+              "buildTarget": "restaurant-management:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+=======
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "teleport-project-template-angular:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "teleport-project-template-angular:build:production"
+            }
+          }
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+<<<<<<< HEAD
+            "buildTarget": "restaurant-management:build"
+=======
+            "browserTarget": "teleport-project-template-angular:build"
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+<<<<<<< HEAD
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "css",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}
+=======
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "teleport-project-template-angular:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "teleport-project-template-angular:serve:production"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "teleport-project-template-angular",
+  "cli": {
+    "analytics": false
+  }
+}
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf

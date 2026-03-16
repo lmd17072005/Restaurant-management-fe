@@ -1,0 +1,28 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+<<<<<<< HEAD
+  "files": ["src/main.ts"],
+  "include": ["src/**/*.d.ts"]
+}
+=======
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/test.ts",
+    "src/**/*.spec.ts"
+  ]
+}
+>>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
