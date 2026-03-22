@@ -1,18 +1,11 @@
 {
-<<<<<<< HEAD
   "name": "restaurant-management-angular",
   "version": "1.0.0",
   "description": "Restaurant Management Platform - Angular Implementation",
-=======
-  "name": "rms",
-  "author": "teleportHQ",
-  "version": "0.0.0",
->>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-<<<<<<< HEAD
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
@@ -20,7 +13,6 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.0.0",
-    "@angular/cdk": "^18.0.0",
     "@angular/common": "^18.0.0",
     "@angular/compiler": "^18.0.0",
     "@angular/core": "^18.0.0",
@@ -45,33 +37,3 @@
     "postcss": "^8.4.0"
   }
 }
-=======
-    "watch": "ng build --watch --configuration development"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/common": "^14.0.0",
-    "@angular/compiler": "^14.0.0",
-    "@angular/core": "^14.0.0",
-    "@angular/forms": "^14.0.0",
-    "@angular/platform-browser": "^14.0.0",
-    "@angular/platform-browser-dynamic": "^14.0.0",
-    "@angular/router": "^14.0.0",
-    "core-js": "~3.0.1",
-    "rxjs": "~6.6.0",
-    "tslib": "^2.1.0",
-    "zone.js": "~0.11.4",
-    "@teleporthq/react-components": "latest",
-    "next": "^12.1.10",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "^14.0.0",
-    "@angular/cli": "^14.0.0",
-    "@angular/compiler-cli": "^14.0.0",
-    "@types/node": "^12.11.1",
-    "typescript": "~4.7.3"
-  }
-}
->>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf

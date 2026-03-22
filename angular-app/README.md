@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Restaurant Management Platform - Angular Implementation
 
 This is a complete Angular implementation of the Restaurant Management Platform, featuring Customer Booking, Staff POS, and Manager Dashboard interfaces.
@@ -451,6 +450,3 @@ For issues or questions:
 **Built with Angular 18 + TypeScript + Tailwind CSS**
 
 *Vietnamese Restaurant Management Platform - Complete Standalone Angular Implementation*
-=======
-# Restaurant-management-fe
->>>>>>> 6a2e5aa0d42caf440ac2fd72ab5a5a13218b30bf
