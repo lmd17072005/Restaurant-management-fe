@@ -225,23 +225,23 @@
       <div class="table-selection card">
         <h3>Chọn Bàn</h3>
         <div class="selection-summary">
-          <div class="summary-item">
+          <div class="summary-row">
             <span class="summary-label">Đã chọn:</span>
             <span class="summary-value">{{ selectedTableIds.length }} bàn</span>
           </div>
-          <div class="summary-item">
+          <div class="summary-row">
             <span class="summary-label">Tổng sức chứa:</span>
-            <span class="summary-value capacity">{{ getTotalCapacity() }} ghế</span>
+            <span class="summary-value">{{ getTotalCapacity() }} ghế</span>
           </div>
-          <div class="summary-item">
+          <div class="summary-row">
             <span class="summary-label">Số ghế cần:</span>
-            <span class="summary-value needed">{{ getTotalSeatsNeeded() }} ghế</span>
+            <span class="summary-value">{{ getTotalSeatsNeeded() }} ghế</span>
           </div>
-          <div class="summary-status" *ngIf="selectedTableIds.length > 0">
-            <span *ngIf="getTotalCapacity() >= getTotalSeatsNeeded()" class="status-ok">
+          <div class="summary-row" *ngIf="selectedTableIds.length > 0">
+            <span *ngIf="getTotalCapacity() >= getTotalSeatsNeeded()" class="summary-value" style="color: #065f46; background: #d1fae5; padding: 0.5rem; border-radius: 0.5rem; width: 100%; text-align: center;">
               ✓ Đủ chỗ
             </span>
-            <span *ngIf="getTotalCapacity() < getTotalSeatsNeeded()" class="status-not-enough">
+            <span *ngIf="getTotalCapacity() < getTotalSeatsNeeded()" class="summary-value" style="color: #991b1b; background: #fee2e2; padding: 0.5rem; border-radius: 0.5rem; width: 100%; text-align: center;">
               ✗ Chưa đủ chỗ (thiếu {{ getTotalSeatsNeeded() - getTotalCapacity() }} ghế)
             </span>
           </div>
@@ -249,54 +249,54 @@
 
         <!-- 2-seat tables -->
         <div class="table-group" *ngIf="getTablesByCapacity(2).length > 0">
-          <h4>2-Seat Tables</h4>
+          <h4 class="table-group-header">Bàn 2 Chỗ</h4>
           <div class="table-grid">
-            <button
+            <div
               *ngFor="let table of getTablesByCapacity(2)"
               [class.selected]="isTableSelected(table.id)"
               (click)="toggleTableSelection(table.id)"
-              class="table-button">
-              <span class="table-number">{{ table.number }}</span>
-              <span class="table-capacity">{{ table.capacity }} seats</span>
-            </button>
+              class="table-card">
+              <span class="table-number">Bàn {{ table.number }}</span>
+              <span class="table-capacity">{{ table.capacity }} chỗ</span>
+            </div>
           </div>
         </div>
 
         <!-- 4-seat tables -->
         <div class="table-group" *ngIf="getTablesByCapacity(4).length > 0">
-          <h4>4-Seat Tables</h4>
+          <h4 class="table-group-header">Bàn 4 Chỗ</h4>
           <div class="table-grid">
-            <button
+            <div
               *ngFor="let table of getTablesByCapacity(4)"
               [class.selected]="isTableSelected(table.id)"
               (click)="toggleTableSelection(table.id)"
-              class="table-button">
-              <span class="table-number">{{ table.number }}</span>
-              <span class="table-capacity">{{ table.capacity }} seats</span>
-            </button>
+              class="table-card">
+              <span class="table-number">Bàn {{ table.number }}</span>
+              <span class="table-capacity">{{ table.capacity }} chỗ</span>
+            </div>
           </div>
         </div>
 
         <!-- 6-seat tables -->
         <div class="table-group" *ngIf="getTablesByCapacity(6).length > 0">
-          <h4>6-Seat Tables</h4>
+          <h4 class="table-group-header">Bàn 6 Chỗ</h4>
           <div class="table-grid">
-            <button
+            <div
               *ngFor="let table of getTablesByCapacity(6)"
               [class.selected]="isTableSelected(table.id)"
               (click)="toggleTableSelection(table.id)"
-              class="table-button">
-              <span class="table-number">{{ table.number }}</span>
-              <span class="table-capacity">{{ table.capacity }} seats</span>
-            </button>
+              class="table-card">
+              <span class="table-number">Bàn {{ table.number }}</span>
+              <span class="table-capacity">{{ table.capacity }} chỗ</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Booking Form -->
-      <form (ngSubmit)="submitReservation()" class="booking-form card">
-        <h3>Your Details</h3>
-
+      <div class="form-section card">
+        <h3>Thông Tin Của Bạn</h3>
+        
         <div class="form-row">
           <div class="form-group">
             <label for="name">Full Name *</label>
@@ -368,10 +368,10 @@
           {{ errorMessage }}
         </div>
 
-        <button type="submit" class="btn-primary submit-button">
+        <button type="submit" (click)="submitReservation()" class="btn-primary submit-button">
           Confirm Reservation
         </button>
-      </form>
+      </div>
 
       <!-- Success Message -->
       <div *ngIf="showSuccess" class="success-overlay">
