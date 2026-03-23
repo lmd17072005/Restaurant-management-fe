@@ -117,11 +117,11 @@ export class CustomerComponent implements OnInit {
   
   getStatusText(status: string): string {
     const statusMap: {[key: string]: string} = {
-      'pending': 'Chờ xác nhận',
-      'confirmed': 'Đã xác nhận',
-      'seated': 'Đang phục vụ',
-      'completed': 'Hoàn thành',
-      'cancelled': 'Đã hủy'
+      'pending': 'Pending',
+      'confirmed': 'Confirmed',
+      'seated': 'Seated',
+      'completed': 'Completed',
+      'cancelled': 'Cancelled'
     };
     return statusMap[status] || status;
   }

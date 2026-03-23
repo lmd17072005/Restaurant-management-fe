@@ -1,387 +1,450 @@
-<div class="customer-container">
-  <!-- Header -->
-  <header class="customer-header card">
-    <h1>🍜 Đặt Bàn Nhà Hàng</h1>
-    <p>Trải nghiệm ẩm thực Việt Nam chính gốc</p>
+<div class="customer-view">
+  <!-- Top Header (Mobile & Desktop) -->
+  <header class="top-header">
+    <div class="header-container">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 20V10M12 20V4M6 20v-6"/>
+          </svg>
+        </div>
+        <span class="logo-text">Gastros</span>
+      </div>
+      <button (click)="logout()" class="logout-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+    </div>
   </header>
 
-  <!-- Logout & History Buttons -->
-  <div class="logout-section">
-    <button (click)="toggleHistory()" class="btn-outline">
-      {{ showHistory ? '📝 Quay lại đặt bàn' : '📜 Lịch sử đặt bàn' }}
-    </button>
-    <button (click)="logout()" class="btn-secondary">Đăng xuất</button>
-  </div>
+  <!-- Main Content Area -->
+  <main class="main-content" [class.with-bottom-nav]="!showHistory">
+    <!-- HISTORY VIEW -->
+    <div *ngIf="showHistory" class="history-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Reservation History</h1>
+          <p class="page-subtitle">View and manage your bookings</p>
+        </div>
+        <button (click)="toggleHistory()" class="btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          New Booking
+        </button>
+      </div>
 
-  <!-- History Section -->
-  <div *ngIf="showHistory" class="history-section">
-    <div class="history-search card">
-      <h2>🔍 Tra cứu lịch sử đặt bàn</h2>
-      <div class="search-form">
-        <input 
-          type="tel" 
-          [(ngModel)]="searchPhone" 
-          placeholder="Nhập số điện thoại (10 số)"
-          maxlength="10"
-          class="search-input">
-        <button (click)="searchHistory()" class="btn">Tìm kiếm</button>
+      <!-- Search Card -->
+      <div class="search-card card">
+        <h2 class="card-title">Find Your Reservation</h2>
+        <div class="search-form">
+          <div class="input-group">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <input 
+              type="tel" 
+              [(ngModel)]="searchPhone" 
+              placeholder="Enter phone number"
+              maxlength="10"
+              class="form-input">
+          </div>
+          <button (click)="searchHistory()" class="btn-primary">Search</button>
+        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </div>
+
+      <!-- Reservations List -->
+      <div *ngIf="myReservations.length > 0" class="reservations-section">
+        <div class="section-header">
+          <h3 class="section-title">Your Reservations</h3>
+          <span class="badge">{{ myReservations.length }}</span>
+        </div>
+
+        <div class="reservations-grid">
+          <div *ngFor="let reservation of myReservations" class="reservation-card card">
+            <div class="status-header" [ngClass]="getStatusClass(reservation.status)">
+              <span class="status-badge">{{ getStatusText(reservation.status) }}</span>
+              <span class="reservation-id">#{{ reservation.id.substring(4, 10) }}</span>
+            </div>
+
+            <div class="reservation-body">
+              <div class="info-row main-info">
+                <div class="info-item">
+                  <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  <div>
+                    <div class="info-label">Date</div>
+                    <div class="info-value">{{ reservation.date }}</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  <div>
+                    <div class="info-label">Time</div>
+                    <div class="info-value">{{ reservation.time }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="info-row">
+                <div class="info-label">Name</div>
+                <div class="info-value">{{ reservation.customerName }}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">Phone</div>
+                <div class="info-value">{{ reservation.customerPhone }}</div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="guests-section">
+                <div class="guests-header">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                  Guest Details
+                </div>
+                <div class="guests-breakdown">
+                  <div class="guest-row">
+                    <span>{{ reservation.guestCount }} Adult(s)</span>
+                  </div>
+                  <div *ngIf="reservation.childrenCount && reservation.childrenCount > 0" class="guest-row">
+                    <span>{{ reservation.childrenCount }} Young Child(ren)</span>
+                    <span class="guest-note">No seat</span>
+                  </div>
+                  <div *ngIf="reservation.childrenWithSeatCount && reservation.childrenWithSeatCount > 0" class="guest-row">
+                    <span>{{ reservation.childrenWithSeatCount }} Child(ren)</span>
+                    <span class="guest-note">With seat</span>
+                  </div>
+                </div>
+                <div class="guests-total">
+                  <span>Total:</span>
+                  <strong>{{ reservation.guestCount + (reservation.childrenCount || 0) + (reservation.childrenWithSeatCount || 0) }} guests</strong>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="tables-section">
+                <div class="info-label">Tables</div>
+                <div class="table-badges">
+                  <span *ngFor="let tableId of reservation.tableIds" class="table-badge">
+                    {{ tableId.replace('table-', '') }}
+                  </span>
+                </div>
+              </div>
+
+              <div *ngIf="reservation.notes" class="notes-section">
+                <div class="info-label">Special Requests</div>
+                <p class="notes-text">{{ reservation.notes }}</p>
+              </div>
+
+              <button 
+                *ngIf="canCancel(reservation)" 
+                (click)="cancelReservation(reservation)" 
+                class="btn-cancel">
+                Cancel Reservation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="myReservations.length === 0 && searchPhone" class="empty-state card">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <h3>No Reservations Found</h3>
+        <p>We couldn't find any reservations with this phone number.</p>
       </div>
     </div>
 
-    <!-- My Reservations -->
-    <div *ngIf="myReservations.length > 0" class="my-reservations">
-      <h2>📋 Lịch sử đặt bàn của bạn</h2>
-      <p class="history-count">Tìm thấy {{ myReservations.length }} đặt bàn</p>
-      
-      <div class="reservations-list">
-        <div *ngFor="let reservation of myReservations" class="history-card card">
-          <!-- Status Badge -->
-          <div class="reservation-status-header">
-            <span class="status-badge" [ngClass]="getStatusClass(reservation.status)">
-              {{ getStatusText(reservation.status) }}
-            </span>
-            <span class="reservation-id">{{ reservation.id }}</span>
-          </div>
+    <!-- BOOKING VIEW -->
+    <div *ngIf="!showHistory" class="booking-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Book a Table</h1>
+          <p class="page-subtitle">Reserve your dining experience</p>
+        </div>
+      </div>
 
-          <!-- Date & Time -->
-          <div class="reservation-datetime">
-            <div class="datetime-item">
-              <span class="datetime-icon">📅</span>
-              <div class="datetime-info">
-                <span class="datetime-label">Ngày</span>
-                <span class="datetime-value">{{ reservation.date }}</span>
-              </div>
-            </div>
-            <div class="datetime-item">
-              <span class="datetime-icon">🕐</span>
-              <div class="datetime-info">
-                <span class="datetime-label">Giờ</span>
-                <span class="datetime-value">{{ reservation.time }}</span>
-              </div>
-            </div>
+      <!-- Party Size -->
+      <div class="booking-card card">
+        <h2 class="card-title">Party Size</h2>
+        
+        <div class="guest-counter">
+          <div class="guest-info">
+            <div class="guest-label">Adults</div>
+            <div class="guest-sublabel">Age 13+</div>
           </div>
-
-          <!-- Customer Info -->
-          <div class="reservation-info">
-            <div class="info-row">
-              <span class="info-label">👤 Tên:</span>
-              <span class="info-value">{{ reservation.customerName }}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">📞 SĐT:</span>
-              <span class="info-value">{{ reservation.customerPhone }}</span>
-            </div>
-          </div>
-
-          <!-- Guest Details -->
-          <div class="reservation-guests">
-            <h4>👥 Thông tin khách</h4>
-            <div class="guests-breakdown">
-              <div class="guest-item">
-                <span class="guest-icon">👤</span>
-                <span class="guest-text">{{ reservation.guestCount }} người lớn</span>
-              </div>
-              <div *ngIf="reservation.childrenCount && reservation.childrenCount > 0" class="guest-item">
-                <span class="guest-icon">👶</span>
-                <span class="guest-text">{{ reservation.childrenCount }} trẻ nhỏ (không ghế)</span>
-              </div>
-              <div *ngIf="reservation.childrenWithSeatCount && reservation.childrenWithSeatCount > 0" class="guest-item">
-                <span class="guest-icon">🧒</span>
-                <span class="guest-text">{{ reservation.childrenWithSeatCount }} trẻ em (cần ghế)</span>
-              </div>
-            </div>
-            <div class="guests-total">
-              <span class="total-label">Tổng số người:</span>
-              <span class="total-value">{{ reservation.guestCount + (reservation.childrenCount || 0) + (reservation.childrenWithSeatCount || 0) }}</span>
-            </div>
-          </div>
-
-          <!-- Tables -->
-          <div class="reservation-tables">
-            <span class="tables-label">🪑 Bàn số:</span>
-            <div class="tables-list">
-              <span *ngFor="let tableId of reservation.tableIds" class="table-badge">
-                {{ tableId.replace('table-', '') }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Notes -->
-          <div *ngIf="reservation.notes" class="reservation-notes">
-            <span class="notes-label">📝 Ghi chú:</span>
-            <p class="notes-text">{{ reservation.notes }}</p>
-          </div>
-
-          <!-- Pre-order Badge -->
-          <div *ngIf="reservation.hasPreOrder" class="preorder-badge">
-            ✅ Đã đặt món trước
-          </div>
-
-          <!-- Actions -->
-          <div class="reservation-actions" *ngIf="canCancel(reservation)">
-            <button (click)="cancelReservation(reservation)" class="btn-danger btn-sm">
-              ❌ Hủy đặt bàn
+          <div class="counter-controls">
+            <button (click)="guestCount = guestCount > 1 ? guestCount - 1 : 1" class="counter-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <span class="counter-value">{{ guestCount }}</span>
+            <button (click)="guestCount = guestCount + 1" class="counter-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
             </button>
           </div>
         </div>
+
+        <div class="guest-counter">
+          <div class="guest-info">
+            <div class="guest-label">Young Children</div>
+            <div class="guest-sublabel">Under 5 yrs • Lap seating</div>
+          </div>
+          <div class="counter-controls">
+            <button (click)="childrenCount = childrenCount > 0 ? childrenCount - 1 : 0" class="counter-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <span class="counter-value">{{ childrenCount }}</span>
+            <button (click)="childrenCount = childrenCount + 1" class="counter-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="guest-counter">
+          <div class="guest-info">
+            <div class="guest-label">Children</div>
+            <div class="guest-sublabel">Ages 5-12 • Own seating</div>
+          </div>
+          <div class="counter-controls">
+            <button (click)="childrenWithSeatCount = childrenWithSeatCount > 0 ? childrenWithSeatCount - 1 : 0" class="counter-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <span class="counter-value">{{ childrenWithSeatCount }}</span>
+            <button (click)="childrenWithSeatCount = childrenWithSeatCount + 1" class="counter-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-box">
+          <div class="summary-row">
+            <span>Total Guests</span>
+            <strong>{{ getTotalGuests() }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Seats Needed</span>
+            <strong class="primary">{{ getTotalSeatsNeeded() }}</strong>
+          </div>
+        </div>
+
+        <div *ngIf="getTotalSeatsNeeded() > 6" class="alert-box warning">
+          Large party - Please select multiple tables
+        </div>
       </div>
-    </div>
 
-    <!-- No Reservations -->
-    <div *ngIf="myReservations.length === 0 && searchPhone" class="no-reservations card">
-      <div class="empty-icon">📭</div>
-      <h3>Không tìm thấy đặt bàn</h3>
-      <p>Không có lịch sử đặt bàn nào với số điện thoại này.</p>
-    </div>
-  </div>
-
-  <!-- Booking Form (Original) -->
-  <div *ngIf="!showHistory" class="booking-form">
-    <div class="booking-section fade-in">
-      <h2>Make a Reservation</h2>
-      <p class="subtitle">Book your table for an authentic Vietnamese dining experience</p>
-
-      <!-- Guest Count -->
-      <div class="guest-counter card">
-        <label>Số Lượng Khách</label>
+      <!-- Date & Time -->
+      <div class="booking-card card">
+        <h2 class="card-title">Date & Time</h2>
         
-        <div class="guest-section">
-          <div class="guest-type">
-            <div class="guest-label-group">
-              <span class="guest-label">👤 Người lớn</span>
-              <span class="guest-description">Cần ghế riêng</span>
-            </div>
-            <div class="counter-controls">
-              <button (click)="guestCount = guestCount > 1 ? guestCount - 1 : 1" class="counter-btn">-</button>
-              <span class="counter-value">{{ guestCount }}</span>
-              <button (click)="guestCount = guestCount + 1" class="counter-btn">+</button>
-            </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input 
+              type="date" 
+              [(ngModel)]="date" 
+              [min]="date"
+              class="form-input">
           </div>
-
-          <div class="guest-type">
-            <div class="guest-label-group">
-              <span class="guest-label">👶 Trẻ em nhỏ</span>
-              <span class="guest-description">Dưới 5 tuổi - Ngồi cùng bố mẹ</span>
-            </div>
-            <div class="counter-controls">
-              <button (click)="childrenCount = childrenCount > 0 ? childrenCount - 1 : 0" class="counter-btn">-</button>
-              <span class="counter-value">{{ childrenCount }}</span>
-              <button (click)="childrenCount = childrenCount + 1" class="counter-btn">+</button>
-            </div>
-          </div>
-
-          <div class="guest-type">
-            <div class="guest-label-group">
-              <span class="guest-label">🧒 Trẻ em lớn</span>
-              <span class="guest-description">Từ 5-12 tuổi - Cần ghế riêng</span>
-            </div>
-            <div class="counter-controls">
-              <button (click)="childrenWithSeatCount = childrenWithSeatCount > 0 ? childrenWithSeatCount - 1 : 0" class="counter-btn">-</button>
-              <span class="counter-value">{{ childrenWithSeatCount }}</span>
-              <button (click)="childrenWithSeatCount = childrenWithSeatCount + 1" class="counter-btn">+</button>
-            </div>
-          </div>
-
-          <div class="total-guests">
-            <div class="total-row">
-              <span class="total-label">Tổng số người:</span>
-              <span class="total-value">{{ getTotalGuests() }} người</span>
-            </div>
-            <div class="seats-row">
-              <span class="seats-label">💺 Số ghế cần:</span>
-              <span class="seats-value">{{ getTotalSeatsNeeded() }} ghế</span>
-            </div>
+          <div class="form-group">
+            <label class="form-label">Time</label>
+            <input 
+              type="time" 
+              [(ngModel)]="time" 
+              class="form-input">
           </div>
         </div>
-
-        <div class="capacity-info">
-          <div class="info-item">
-            <span class="info-icon">👤</span>
-            <div class="info-text">
-              <strong>{{ guestCount }}</strong> người lớn
-            </div>
-          </div>
-          <div class="info-item" *ngIf="childrenCount > 0">
-            <span class="info-icon">👶</span>
-            <div class="info-text">
-              <strong>{{ childrenCount }}</strong> trẻ nhỏ <span class="note">(không cần ghế)</span>
-            </div>
-          </div>
-          <div class="info-item" *ngIf="childrenWithSeatCount > 0">
-            <span class="info-icon">🧒</span>
-            <div class="info-text">
-              <strong>{{ childrenWithSeatCount }}</strong> trẻ em <span class="note">(cần ghế riêng)</span>
-            </div>
-          </div>
-        </div>
-
-        <p class="suggestion" *ngIf="getTotalSeatsNeeded() >= 1">{{ getSuggestedTables() }}</p>
-        <p class="warning" *ngIf="getTotalSeatsNeeded() > 6">
-          ⚠️ Nhóm lớn - Cần đặt nhiều bàn
-        </p>
       </div>
 
       <!-- Table Selection -->
-      <div class="table-selection card">
-        <h3>Chọn Bàn</h3>
-        <div class="selection-summary">
-          <div class="summary-row">
-            <span class="summary-label">Đã chọn:</span>
-            <span class="summary-value">{{ selectedTableIds.length }} bàn</span>
-          </div>
-          <div class="summary-row">
-            <span class="summary-label">Tổng sức chứa:</span>
-            <span class="summary-value">{{ getTotalCapacity() }} ghế</span>
-          </div>
-          <div class="summary-row">
-            <span class="summary-label">Số ghế cần:</span>
-            <span class="summary-value">{{ getTotalSeatsNeeded() }} ghế</span>
-          </div>
-          <div class="summary-row" *ngIf="selectedTableIds.length > 0">
-            <span *ngIf="getTotalCapacity() >= getTotalSeatsNeeded()" class="summary-value" style="color: #065f46; background: #d1fae5; padding: 0.5rem; border-radius: 0.5rem; width: 100%; text-align: center;">
-              ✓ Đủ chỗ
-            </span>
-            <span *ngIf="getTotalCapacity() < getTotalSeatsNeeded()" class="summary-value" style="color: #991b1b; background: #fee2e2; padding: 0.5rem; border-radius: 0.5rem; width: 100%; text-align: center;">
-              ✗ Chưa đủ chỗ (thiếu {{ getTotalSeatsNeeded() - getTotalCapacity() }} ghế)
-            </span>
-          </div>
-        </div>
+      <div class="booking-card card">
+        <h2 class="card-title">Select Tables</h2>
 
-        <!-- 2-seat tables -->
-        <div class="table-group" *ngIf="getTablesByCapacity(2).length > 0">
-          <h4 class="table-group-header">Bàn 2 Chỗ</h4>
-          <div class="table-grid">
-            <div
-              *ngFor="let table of getTablesByCapacity(2)"
-              [class.selected]="isTableSelected(table.id)"
-              (click)="toggleTableSelection(table.id)"
-              class="table-card">
-              <span class="table-number">Bàn {{ table.number }}</span>
-              <span class="table-capacity">{{ table.capacity }} chỗ</span>
+        <div *ngIf="selectedTableIds.length > 0" class="selection-summary">
+          <div class="summary-stats">
+            <div class="stat">
+              <div class="stat-label">Selected</div>
+              <div class="stat-value">{{ selectedTableIds.length }} table(s)</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Capacity</div>
+              <div class="stat-value">{{ getTotalCapacity() }} seats</div>
             </div>
           </div>
-        </div>
-
-        <!-- 4-seat tables -->
-        <div class="table-group" *ngIf="getTablesByCapacity(4).length > 0">
-          <h4 class="table-group-header">Bàn 4 Chỗ</h4>
-          <div class="table-grid">
-            <div
-              *ngFor="let table of getTablesByCapacity(4)"
-              [class.selected]="isTableSelected(table.id)"
-              (click)="toggleTableSelection(table.id)"
-              class="table-card">
-              <span class="table-number">Bàn {{ table.number }}</span>
-              <span class="table-capacity">{{ table.capacity }} chỗ</span>
-            </div>
+          <div class="capacity-indicator" [class.success]="getTotalCapacity() >= getTotalSeatsNeeded()" [class.error]="getTotalCapacity() < getTotalSeatsNeeded()">
+            <svg *ngIf="getTotalCapacity() >= getTotalSeatsNeeded()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <svg *ngIf="getTotalCapacity() < getTotalSeatsNeeded()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+            <span *ngIf="getTotalCapacity() >= getTotalSeatsNeeded()">Perfect match</span>
+            <span *ngIf="getTotalCapacity() < getTotalSeatsNeeded()">Need {{ getTotalSeatsNeeded() - getTotalCapacity() }} more seat(s)</span>
           </div>
         </div>
 
-        <!-- 6-seat tables -->
-        <div class="table-group" *ngIf="getTablesByCapacity(6).length > 0">
-          <h4 class="table-group-header">Bàn 6 Chỗ</h4>
-          <div class="table-grid">
-            <div
-              *ngFor="let table of getTablesByCapacity(6)"
-              [class.selected]="isTableSelected(table.id)"
-              (click)="toggleTableSelection(table.id)"
-              class="table-card">
-              <span class="table-number">Bàn {{ table.number }}</span>
-              <span class="table-capacity">{{ table.capacity }} chỗ</span>
+        <div class="table-groups">
+          <div *ngIf="getTablesByCapacity(2).length > 0" class="table-group">
+            <div class="table-group-title">2-Seat Tables</div>
+            <div class="table-grid">
+              <button 
+                *ngFor="let table of getTablesByCapacity(2)"
+                [class.selected]="isTableSelected(table.id)"
+                (click)="toggleTableSelection(table.id)"
+                class="table-btn">
+                <div class="table-number">{{ table.number }}</div>
+                <div class="table-capacity">{{ table.capacity }} seats</div>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="getTablesByCapacity(4).length > 0" class="table-group">
+            <div class="table-group-title">4-Seat Tables</div>
+            <div class="table-grid">
+              <button 
+                *ngFor="let table of getTablesByCapacity(4)"
+                [class.selected]="isTableSelected(table.id)"
+                (click)="toggleTableSelection(table.id)"
+                class="table-btn">
+                <div class="table-number">{{ table.number }}</div>
+                <div class="table-capacity">{{ table.capacity }} seats</div>
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="getTablesByCapacity(6).length > 0" class="table-group">
+            <div class="table-group-title">6-Seat Tables</div>
+            <div class="table-grid">
+              <button 
+                *ngFor="let table of getTablesByCapacity(6)"
+                [class.selected]="isTableSelected(table.id)"
+                (click)="toggleTableSelection(table.id)"
+                class="table-btn">
+                <div class="table-number">{{ table.number }}</div>
+                <div class="table-capacity">{{ table.capacity }} seats</div>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Booking Form -->
-      <div class="form-section card">
-        <h3>Thông Tin Của Bạn</h3>
+      <!-- Contact Information -->
+      <div class="booking-card card">
+        <h2 class="card-title">Contact Information</h2>
         
         <div class="form-row">
           <div class="form-group">
-            <label for="name">Full Name *</label>
-            <input
-              id="name"
-              type="text"
-              [(ngModel)]="customerName"
-              name="name"
-              placeholder="Enter your name"
-              class="form-input"
-              required
-            />
+            <label class="form-label">Full Name</label>
+            <input 
+              type="text" 
+              [(ngModel)]="customerName" 
+              placeholder="John Doe"
+              class="form-input">
           </div>
-
           <div class="form-group">
-            <label for="phone">Phone Number *</label>
-            <input
-              id="phone"
-              type="tel"
-              [(ngModel)]="customerPhone"
-              name="phone"
+            <label class="form-label">Phone Number</label>
+            <input 
+              type="tel" 
+              [(ngModel)]="customerPhone" 
               placeholder="0901234567"
-              class="form-input"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="date">Date *</label>
-            <input
-              id="date"
-              type="date"
-              [(ngModel)]="date"
-              name="date"
-              [min]="date"
-              class="form-input"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="time">Time *</label>
-            <input
-              id="time"
-              type="time"
-              [(ngModel)]="time"
-              name="time"
-              class="form-input"
-              required
-            />
+              class="form-input">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="notes">Special Requests (Optional)</label>
-          <textarea
-            id="notes"
-            [(ngModel)]="notes"
-            name="notes"
-            placeholder="Any dietary restrictions or special occasions?"
-            class="form-input"
-            rows="3"
-          ></textarea>
+          <label class="form-label">Special Requests (Optional)</label>
+          <textarea 
+            [(ngModel)]="notes" 
+            placeholder="Dietary restrictions, allergies, celebrations..."
+            class="form-textarea"
+            rows="3"></textarea>
         </div>
 
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
-        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-        <button type="submit" (click)="submitReservation()" class="btn-primary submit-button">
+        <button (click)="submitReservation()" class="btn-submit">
           Confirm Reservation
         </button>
       </div>
+    </div>
+  </main>
 
-      <!-- Success Message -->
-      <div *ngIf="showSuccess" class="success-overlay">
-        <div class="success-message fade-in">
-          <div class="success-icon">✓</div>
-          <h3>Reservation Confirmed!</h3>
-          <p>Thank you for booking with us</p>
-          <p>We'll see you on {{ date }} at {{ time }}</p>
-        </div>
+  <!-- Bottom Navigation (Booking View Only) -->
+  <nav *ngIf="!showHistory" class="bottom-nav">
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      </svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" (click)="toggleHistory()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span>Bookings</span>
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- Success Modal -->
+  <div *ngIf="showSuccess" class="modal-overlay">
+    <div class="modal-content">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
       </div>
+      <h3 class="modal-title">Reservation Confirmed!</h3>
+      <p class="modal-text">Your table has been successfully reserved</p>
+      <div class="modal-detail">{{ date }} at {{ time }}</div>
     </div>
   </div>
 </div>
